@@ -1,6 +1,6 @@
 // Default configuration
 let config = {
-  particleColor: 150,
+  particleColor: [110, 150, 155],
   colorRange: 80,
 };
 function updateConfig(newConfig) {
@@ -39,8 +39,8 @@ function Particle(x, y) {
   this.accY = 0;
   this.friction = Math.random() * 0.05 + 0.82;
 
-  const colorValue = Math.random() * 80 + 150;
-  this.color = `rgb(${colorValue - 40},${colorValue},${colorValue + 5})`;
+  const colorValue = Math.random() * config.colorRange;
+  this.color = `rgb(${config.particleColor[0] + colorValue},${config.particleColor[1] + colorValue},${config.particleColor[2] + colorValue})`;
 }
 Particle.prototype.render = function () {
   ctx.fillStyle = this.color;
