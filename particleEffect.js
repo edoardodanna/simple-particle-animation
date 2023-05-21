@@ -12,7 +12,7 @@ const retinaIndex = window.devicePixelRatio;
 const canvas = document.querySelector("#scene");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 let windowWidth = window.innerWidth;
-let mouse = {x:9999, y:9999};
+let mouse = { x: 9999, y: 9999 };
 let mouseOverCanvas = true;
 let particles = [];
 let lastUsedImage = null;
@@ -24,69 +24,74 @@ let radius;
 let numParticles = 0;
 
 // Set up context
-ctx.globalCompositeOperation = 'difference';
+ctx.globalCompositeOperation = "difference";
 
 // Particle constructor
 function Particle(x, y) {
-    // Initialize the properties with default values
-    this.x = Math.random() * ww;
-    this.y = Math.random() * wh;
-    this.dest = { x: x, y: y };
-    this.r = particleRadius;
-    this.vx = (Math.random() - 0.5) * 20;
-    this.vy = (Math.random() - 0.5) * 20;
-    this.accX = 0;
-    this.accY = 0;
-    this.friction = Math.random() * 0.05 + 0.82;
+  // Initialize the properties with default values
+  this.x = Math.random() * ww;
+  this.y = Math.random() * wh;
+  this.dest = { x: x, y: y };
+  this.r = particleRadius;
+  this.vx = (Math.random() - 0.5) * 20;
+  this.vy = (Math.random() - 0.5) * 20;
+  this.accX = 0;
+  this.accY = 0;
+  this.friction = Math.random() * 0.05 + 0.82;
 
-    const colorValue = Math.random() * 80 + 150;
-    this.color = `rgb(${colorValue - 40},${colorValue},${colorValue + 5})`;
+  const colorValue = Math.random() * 80 + 150;
+  this.color = `rgb(${colorValue - 40},${colorValue},${colorValue + 5})`;
 }
-Particle.prototype.render = function() {
+Particle.prototype.render = function () {
   ctx.fillStyle = this.color;
   ctx.beginPath();
   ctx.arc(this.x, this.y, this.r, Math.PI * 2, false);
   ctx.fill();
-}
+};
 function updateParticlePosition(particle) {
-    particle.accX = (particle.dest.x - particle.x) / 100;
-    particle.accY = (particle.dest.y - particle.y) / 100;
-    particle.vx += particle.accX;
-    particle.vy += particle.accY;
-    particle.vx *= particle.friction;
-    particle.vy *= particle.friction;
-    particle.x += particle.vx;
-    particle.y += particle.vy;
+  particle.accX = (particle.dest.x - particle.x) / 100;
+  particle.accY = (particle.dest.y - particle.y) / 100;
+  particle.vx += particle.accX;
+  particle.vy += particle.accY;
+  particle.vx *= particle.friction;
+  particle.vy *= particle.friction;
+  particle.x += particle.vx;
+  particle.y += particle.vy;
 
-    if (Math.abs(particle.dest.x - particle.x) > 0.1 || Math.abs(particle.dest.y - particle.y) > 0.1 || particle.vx > 0.1 || particle.vy > 0.1) {
-        allInEndPosition = false;
-    }
+  if (
+    Math.abs(particle.dest.x - particle.x) > 0.1 ||
+    Math.abs(particle.dest.y - particle.y) > 0.1 ||
+    particle.vx > 0.1 ||
+    particle.vy > 0.1
+  ) {
+    allInEndPosition = false;
+  }
 
-    if (mouseOverCanvas) {
-        let dx = particle.x - mouse.x;
-        let dy = particle.y - mouse.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < (radius * 50 + Math.random() * radius * 50)) {
-            particle.accX = (particle.x - mouse.x) / (50 + Math.random() * 50);
-            particle.accY = (particle.y - mouse.y) / (50 + Math.random() * 50);
-            particle.vx += particle.accX;
-            particle.vy += particle.accY;
-        }
+  if (mouseOverCanvas) {
+    let dx = particle.x - mouse.x;
+    let dy = particle.y - mouse.y;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance < radius * 50 + Math.random() * radius * 50) {
+      particle.accX = (particle.x - mouse.x) / (50 + Math.random() * 50);
+      particle.accY = (particle.y - mouse.y) / (50 + Math.random() * 50);
+      particle.vx += particle.accX;
+      particle.vy += particle.accY;
     }
+  }
 }
 
 // Event handling functions
-function onMouseMove(e){
+function onMouseMove(e) {
   mouse.x = (e.pageX - canvas.offsetLeft) * retinaIndex;
   mouse.y = (e.pageY - canvas.offsetTop) * retinaIndex;
 }
-function click(e){
+function click(e) {
   mouse.x = (e.pageX - canvas.offsetLeft) * retinaIndex;
   mouse.y = (e.pageY - canvas.offsetTop) * retinaIndex;
   mouseOverCanvas = true;
   debounce(stopClick, 500)();
 }
-function stopClick(){
+function stopClick() {
   mouse.x = 9999;
   mouse.y = 9999;
   mouseOverCanvas = false;
@@ -94,22 +99,20 @@ function stopClick(){
 
 // Main functions
 function initScene(base64Img) {
-  lastUsedImage = base64Img
+  lastUsedImage = base64Img;
   resetParticles();
 
   particles = [];
   numParticles = 0;
   radius = 3 * retinaIndex;
   particleRadius = 4 * retinaIndex;
-  if(ww < 500)
-  {
+  if (ww < 500) {
     radius = 2 * retinaIndex;
   }
-  if(ww < 250 || window.innerWidth < 1000)
-  {
+  if (ww < 250 || window.innerWidth < 1000) {
     radius = 1.5 * retinaIndex;
   }
-  if(window.innerWidth < 500){
+  if (window.innerWidth < 500) {
     particleRadius = 2 * retinaIndex;
   }
   allInEndPosition = false;
@@ -119,30 +122,35 @@ function initScene(base64Img) {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  let imageWidth = ww/2;
-  let imageHeight = Math.round(imageWidth/1.2);
-  if(imageHeight >= 0.9*wh)
-  {
-    imageHeight = 0.8*wh;
-    imageWidth = imageHeight*1.2;
+  let imageWidth = ww / 2;
+  let imageHeight = Math.round(imageWidth / 1.2);
+  if (imageHeight >= 0.9 * wh) {
+    imageHeight = 0.8 * wh;
+    imageWidth = imageHeight * 1.2;
   }
 
   var image = new Image();
-  image.onload = function() {
-    ctx.drawImage(image, ww/2-imageWidth/2, wh/2-imageHeight/2,imageWidth,imageHeight);
-    var data  = ctx.getImageData(0, 0, ww, wh).data;
+  image.onload = function () {
+    ctx.drawImage(
+      image,
+      ww / 2 - imageWidth / 2,
+      wh / 2 - imageHeight / 2,
+      imageWidth,
+      imageHeight
+    );
+    var data = ctx.getImageData(0, 0, ww, wh).data;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.globalCompositeOperation = "screen";
 
-    for(var i=0;i<ww;i+=((particleRadius+2)*2)){
-      for(var j=0;j<wh;j+=((particleRadius+2)*2)){
-        if(data[ ((i + j*ww)*4) + 3] > 0){
-          particles.push(new Particle(i,j));
+    for (var i = 0; i < ww; i += (particleRadius + 2) * 2) {
+      for (var j = 0; j < wh; j += (particleRadius + 2) * 2) {
+        if (data[(i + j * ww) * 4 + 3] > 0) {
+          particles.push(new Particle(i, j));
         }
       }
     }
     numParticles = particles.length;
-  }
+  };
 
   image.src = `data:image/png;base64,${lastUsedImage}`;
 }
@@ -166,7 +174,7 @@ function resetParticles() {
   if (ww < 250 || window.innerWidth < 1000) {
     radius = 1.5 * retinaIndex;
   }
-  if (window.innerWidth < 500){
+  if (window.innerWidth < 500) {
     particleRadius = 2 * retinaIndex;
   }
 }
@@ -193,7 +201,7 @@ function render() {
 window.addEventListener("resize", debounce(handleResize, 200));
 window.addEventListener("mousemove", onMouseMove);
 window.addEventListener("touchstart", click);
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("DOMContentLoaded", () => {
   requestAnimationFrame(render);
 });
 
@@ -203,7 +211,7 @@ window.initScene = initScene;
 // Debounce function
 function debounce(func, wait) {
   let timeout;
-  return function() {
+  return function () {
     clearTimeout(timeout);
     timeout = setTimeout(func, wait);
   };
