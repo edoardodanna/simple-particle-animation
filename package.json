@@ -1,0 +1,26 @@
+{
+  "name": "simple-particle-animation",
+  "version": "0.0.1",
+  "description": "Simple Javascript particle animation",
+  "main": "particleEffect.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edoardodanna/simple-particle-animation.git"
+  },
+  "author": "Edoardo D'Anna",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edoardodanna/simple-particle-animation/issues"
+  },
+  "homepage": "https://github.com/edoardodanna/simple-particle-animation#readme",
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "prettier": "2.8.8"
+  },
+  "scripts": {
+    "format": "prettier --write ."
+  }
+}
