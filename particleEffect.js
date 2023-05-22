@@ -41,7 +41,9 @@ function Particle(x, y) {
   this.friction = Math.random() * 0.05 + 0.82;
 
   const colorValue = Math.random() * config.colorRange;
-  this.color = `rgb(${config.particleColor[0] + colorValue},${config.particleColor[1] + colorValue},${config.particleColor[2] + colorValue})`;
+  this.color = `rgb(${config.particleColor[0] + colorValue},${
+    config.particleColor[1] + colorValue
+  },${config.particleColor[2] + colorValue})`;
 }
 Particle.prototype.render = function () {
   ctx.fillStyle = this.color;
@@ -83,7 +85,7 @@ function updateParticlePosition(particle) {
 
 // Event handling functions
 function mouseStatus(value) {
-    mouseOverCanvas = value;
+  mouseOverCanvas = value;
 }
 function onMouseMove(e) {
   mouse.x = (e.pageX - canvas.offsetLeft) * retinaIndex;
@@ -159,7 +161,7 @@ function initScene(base64Img) {
   image.src = `data:image/png;base64,${lastUsedImage}`;
 }
 function updateScene() {
-  var x = 0
+  var x = 0;
 }
 
 function handleResize() {

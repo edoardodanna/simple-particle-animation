@@ -17,7 +17,11 @@ To add this animation to your website:
   ```
 - Include a `canvas` tag with the following callbacks:
   ```html
-  <canvas id="scene" onmouseover="mouseStatus(true);" onmouseout="mouseStatus(false);"></canvas>
+  <canvas
+    id="scene"
+    onmouseover="mouseStatus(true);"
+    onmouseout="mouseStatus(false);"
+  ></canvas>
   ```
 - Call the `initScene()` function from Javascript with a base64 encoded png, for example:
   ```js
@@ -29,17 +33,21 @@ To add this animation to your website:
 Note that the script will use the provided image's alpha channel (transparency) to draw the particle effect. For the best effect, stick with png images depicting simple shapes (e.g. a heart) where everything outside of the image is set to full transparency (i.e. alpha = 0).
 
 ## Configuration
+
 There are several configurable option in the animation.
 
 These can be set by calling `window.updateConfig({ newConfigDict });`. For instance, to change the base color, you might call:
+
 ```js
-  window.updateConfig({ particleColor: color });
+window.updateConfig({ particleColor: color });
 ```
 
 #### particleColor
+
 Controls the base color of the particles. Provided as RGB.
 Defaults to [110, 150, 155].
 
 #### colorRange
+
 Control the random brightness variability around the base color. A value of 0 means all the particles are the exact same color.
 Defaults to 80.

@@ -1,114 +1,144 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Particle Effect Demo</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    .container {
-      margin-top: 50px;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-
-    #scene {
-      width: 100%;
-      height: 500px;
-      border: 1px solid #ccc;
-      box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .custom-file-input:hover::after {
-      content: "Select file";
-      color: white;
-      background-color: #007bff;
-      transition: all 0.2s ease-in-out;
-    }
-
-    .color-picker {
-      background-color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-    }
-
-    .color-picker:hover {
-      background-color: rgb(210, 210, 210);
-    }
-
-    .input-group-text {
-      width: 200px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Particle Effect Demo</h1>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text">Select an image</span>
-      </div>
-      <div class="custom-file">
-        <input type="file" class="custom-file-input" id="file" accept="image/png">
-        <label class="custom-file-label" for="file">Choose file</label>
-      </div>
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text">Particle color</span>
-      </div>
-      <input type="color" class="form-control color-picker" id="color" value="#6e969b">
-    </div>
-    <div id="canvasContainer">
-      <canvas id="scene" onmouseover="mouseStatus(true);" onmouseout="mouseStatus(false);"></canvas>
-    </div>
-  </div>
-
-  <script src="particleEffect.js"></script>
-  <script>
-    let base64Img = "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
-    window.initScene(base64Img);
-    const imgInput = document.querySelector("#file");
-
-    imgInput.addEventListener("change", function() {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = function() {
-          base64Img = reader.result.replace("data:image/png;base64,", "");
-          window.initScene(base64Img);
-        };
-        reader.readAsDataURL(file);
+  <head>
+    <title>Particle Effect Demo</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
       }
-    });
 
-    const colorInput = document.querySelector('#color');
-    colorInput.addEventListener('change', function() {
-      const color = hexToRgb(this.value);
-      window.updateConfig({ particleColor: color });
+      .container {
+        margin-top: 50px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      #scene {
+        width: 100%;
+        height: 500px;
+        border: 1px solid #ccc;
+        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .custom-file-input:hover::after {
+        content: "Select file";
+        color: white;
+        background-color: #007bff;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .color-picker {
+        background-color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .color-picker:hover {
+        background-color: rgb(210, 210, 210);
+      }
+
+      .input-group-text {
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Particle Effect Demo</h1>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Select an image</span>
+        </div>
+        <div class="custom-file">
+          <input
+            type="file"
+            class="custom-file-input"
+            id="file"
+            accept="image/png"
+          />
+          <label class="custom-file-label" for="file">Choose file</label>
+        </div>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Particle color</span>
+        </div>
+        <input
+          type="color"
+          class="form-control color-picker"
+          id="color"
+          value="#6e969b"
+        />
+      </div>
+      <div id="canvasContainer">
+        <canvas
+          id="scene"
+          onmouseover="mouseStatus(true);"
+          onmouseout="mouseStatus(false);"
+        ></canvas>
+      </div>
+    </div>
+
+    <script src="particleEffect.js"></script>
+    <script>
+      let base64Img =
+        "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII";
       window.initScene(base64Img);
-    });
+      const imgInput = document.querySelector("#file");
 
-    function hexToRgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-      ] : null;
-    }
-  </script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-</body>
+      imgInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = function () {
+            base64Img = reader.result.replace("data:image/png;base64,", "");
+            window.initScene(base64Img);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      const colorInput = document.querySelector("#color");
+      colorInput.addEventListener("change", function () {
+        const color = hexToRgb(this.value);
+        window.updateConfig({ particleColor: color });
+        window.initScene(base64Img);
+      });
+
+      function hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result
+          ? [
+              parseInt(result[1], 16),
+              parseInt(result[2], 16),
+              parseInt(result[3], 16),
+            ]
+          : null;
+      }
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
