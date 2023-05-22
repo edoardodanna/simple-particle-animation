@@ -5,6 +5,7 @@ let config = {
 };
 function updateConfig(newConfig) {
   config = { ...config, ...newConfig };
+  updateScene();
 }
 
 // Constants and global variables
@@ -40,7 +41,9 @@ function Particle(x, y) {
   this.friction = Math.random() * 0.05 + 0.82;
 
   const colorValue = Math.random() * config.colorRange;
-  this.color = `rgb(${config.particleColor[0] + colorValue},${config.particleColor[1] + colorValue},${config.particleColor[2] + colorValue})`;
+  this.color = `rgb(${config.particleColor[0] + colorValue},${
+    config.particleColor[1] + colorValue
+  },${config.particleColor[2] + colorValue})`;
 }
 Particle.prototype.render = function () {
   ctx.fillStyle = this.color;
@@ -81,6 +84,9 @@ function updateParticlePosition(particle) {
 }
 
 // Event handling functions
+function mouseStatus(value) {
+  mouseOverCanvas = value;
+}
 function onMouseMove(e) {
   mouse.x = (e.pageX - canvas.offsetLeft) * retinaIndex;
   mouse.y = (e.pageY - canvas.offsetTop) * retinaIndex;
@@ -154,11 +160,14 @@ function initScene(base64Img) {
 
   image.src = `data:image/png;base64,${lastUsedImage}`;
 }
+function updateScene() {
+  var x = 0;
+}
 
 function handleResize() {
   if (windowWidth !== window.innerWidth && lastUsedImage) {
     windowWidth = window.innerWidth;
-    initScene(lastUsedImage);
+    initScene();
   }
 }
 
@@ -205,8 +214,9 @@ window.addEventListener("DOMContentLoaded", () => {
   requestAnimationFrame(render);
 });
 
-// Expose initScene to global scope
+// Expose initScene and updateConfig to global scope
 window.initScene = initScene;
+window.updateConfig = updateConfig;
 
 // Debounce function
 function debounce(func, wait) {
