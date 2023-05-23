@@ -1,144 +1,209 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Particle Effect Demo</title>
-    <link
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      rel="stylesheet"
-      crossorigin="anonymous"
-    />
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-      }
+<head>
+  <title>Particle Effect Demo</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      margin-top: 25px;
+      margin-bottom: 25px;
+    }
 
-      .container {
-        margin-top: 50px;
-      }
+    h1 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
 
-      h1 {
-        text-align: center;
-        margin-bottom: 50px;
-      }
+    #canvasContainer {
+      text-align: center;
+    }
+    #scene {
+      width: 100%;
+      height: 400px;
+      border: 1px solid #ccc;
+      box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 25px;
+    }
 
-      #scene {
-        width: 100%;
-        height: 500px;
-        border: 1px solid #ccc;
-        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
-      }
+    .custom-file-input:hover::after {
+      content: "Select file";
+      color: white;
+      background-color: #007bff;
+      transition: all 0.2s ease-in-out;
+    }
 
-      .custom-file-input:hover::after {
-        content: "Select file";
-        color: white;
-        background-color: #007bff;
-        transition: all 0.2s ease-in-out;
-      }
+    .color-picker {
+      background-color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
 
-      .color-picker {
-        background-color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
-      }
+    .color-picker:hover {
+      background-color: rgb(210, 210, 210);
+    }
 
-      .color-picker:hover {
-        background-color: rgb(210, 210, 210);
-      }
-
-      .input-group-text {
-        width: 200px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Particle Effect Demo</h1>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Select an image</span>
-        </div>
-        <div class="custom-file">
-          <input
-            type="file"
-            class="custom-file-input"
-            id="file"
-            accept="image/png"
-          />
-          <label class="custom-file-label" for="file">Choose file</label>
-        </div>
+    .input-group{
+      margin-bottom: 0.5rem !important;
+    }
+    .input-group-text {
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Particle Effect Demo</h1>
+    <div id="canvasContainer">
+      <canvas id="scene" onmouseover="mouseStatus(true);" onmouseout="mouseStatus(false);"></canvas>
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Select an image</span>
       </div>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Particle color</span>
-        </div>
-        <input
-          type="color"
-          class="form-control color-picker"
-          id="color"
-          value="#6e969b"
-        />
-      </div>
-      <div id="canvasContainer">
-        <canvas
-          id="scene"
-          onmouseover="mouseStatus(true);"
-          onmouseout="mouseStatus(false);"
-        ></canvas>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="file" accept="image/png">
+        <label class="custom-file-label" for="file">Choose file</label>
       </div>
     </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Particle color</span>
+      </div>
+      <input type="color" class="form-control color-picker" id="color" value="#96bec3">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Color Noise</span>
+      </div>
+      <input type="number" class="form-control" id="colorNoise" value="80">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Mouse Avoidance Strength</span>
+      </div>
+      <input type="number" class="form-control" id="mouseAvoidanceStrength" value="2" step="0.1">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Mouse Avoidance Strength Noise</span>
+      </div>
+      <input type="number" class="form-control" id="mouseAvoidanceStrengthNoise" value="2" step="0.1">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Mouse Avoidance Distance</span>
+      </div>
+      <input type="number" class="form-control" id="mouseAvoidanceDistance" value="50">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Mouse Avoidance Distance Noise</span>
+      </div>
+      <input type="number" class="form-control" id="mouseAvoidanceDistanceNoise" value="50">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Particle Friction</span>
+      </div>
+      <input type="number" class="form-control" id="particleFriction" value="0.18" step="0.01">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Particle Friction Noise</span>
+      </div>
+      <input type="number" class="form-control" id="particleFrictionNoise" value="0.05" step="0.01">
+    </div>
+  </div>
 
-    <script src="particleEffect.js"></script>
-    <script>
-      let base64Img =
-        "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII";
-      window.initScene(base64Img);
-      const imgInput = document.querySelector("#file");
+  <script src="particleEffect.js"></script>
+  <script>
+    let base64Img = "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
+    window.initScene(base64Img);
+    const imgInput = document.querySelector("#file");
 
-      imgInput.addEventListener("change", function () {
-        const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onloadend = function () {
-            base64Img = reader.result.replace("data:image/png;base64,", "");
-            window.initScene(base64Img);
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-
-      const colorInput = document.querySelector("#color");
-      colorInput.addEventListener("change", function () {
-        const color = hexToRgb(this.value);
-        window.updateConfig({ particleColor: color });
-        window.initScene(base64Img);
-      });
-
-      function hexToRgb(hex) {
-        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result
-          ? [
-              parseInt(result[1], 16),
-              parseInt(result[2], 16),
-              parseInt(result[3], 16),
-            ]
-          : null;
+    imgInput.addEventListener("change", function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = function() {
+          base64Img = reader.result.replace("data:image/png;base64,", "");
+          window.initScene(base64Img);
+        };
+        reader.readAsDataURL(file);
       }
-    </script>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+    });
+
+    const colorInput = document.querySelector('#color');
+    colorInput.addEventListener('change', function() {
+      const color = hexToRgb(this.value);
+      window.updateConfig({ particleColor: color });
+      window.initScene(base64Img);
+    });
+
+    const colorNoiseInput = document.querySelector('#colorNoise');
+    colorNoiseInput.addEventListener('change', function() {
+      const colorNoise = parseInt(this.value, 10);
+      window.updateConfig({ colorNoise: colorNoise });
+      window.initScene(base64Img);
+    });
+
+    const mouseAvoidanceStrengthInput = document.querySelector('#mouseAvoidanceStrength');
+    mouseAvoidanceStrengthInput.addEventListener('change', function() {
+      const mouseAvoidanceStrength = parseFloat(this.value);
+      window.updateConfig({ mouseAvoidanceStrength: mouseAvoidanceStrength });
+      window.initScene(base64Img);
+    });
+    const mouseAvoidanceStrengthNoiseInput = document.querySelector('#mouseAvoidanceStrengthNoise');
+    mouseAvoidanceStrengthNoiseInput.addEventListener('change', function() {
+      const mouseAvoidanceStrengthNoise = parseFloat(this.value);
+      window.updateConfig({ mouseAvoidanceStrengthNoise: mouseAvoidanceStrengthNoise });
+      window.initScene(base64Img);
+    });
+
+    const mouseAvoidanceDistanceInput = document.querySelector('#mouseAvoidanceDistance');
+    mouseAvoidanceDistanceInput.addEventListener('change', function() {
+      const mouseAvoidanceDistance = parseInt(this.value, 10);
+      window.updateConfig({ mouseAvoidanceDistance: mouseAvoidanceDistance });
+      window.initScene(base64Img);
+    });
+    const mouseAvoidanceDistanceNoiseInput = document.querySelector('#mouseAvoidanceDistanceNoise');
+    mouseAvoidanceDistanceNoiseInput.addEventListener('change', function() {
+      const mouseAvoidanceDistanceNoise = parseInt(this.value, 10);
+      window.updateConfig({ mouseAvoidanceDistanceNoise: mouseAvoidanceDistanceNoise });
+      window.initScene(base64Img);
+    });
+
+    const particleFrictionInput = document.querySelector('#particleFriction');
+    particleFrictionInput.addEventListener('change', function() {
+      const particleFriction = parseFloat(this.value);
+      window.updateConfig({ particleFriction: particleFriction });
+      window.initScene(base64Img);
+    });
+    const particleFrictionNoiseInput = document.querySelector('#particleFrictionNoise');
+    particleFrictionNoiseInput.addEventListener('change', function() {
+      const particleFrictionNoise = parseFloat(this.value);
+      window.updateConfig({ particleFrictionNoise: particleFrictionNoise });
+      window.initScene(base64Img);
+    });
+
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+      ] : null;
+    }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
 </html>
