@@ -43,33 +43,41 @@ window.updateConfig({ particleColor: color });
 ```
 
 #### particleColor
+
 Controls the base color of the particles. Provided as RGB.
 Defaults to [150, 190, 195].
 
 #### colorNoise
+
 Controls the random brightness variability around the base color. A value of 0 means all the particles are the exact same color.
 Defaults to 80.
 
 #### particleFriction
+
 Controls the amount of friction experienced by the particles. 0 means particles never stop. High values will cause particles to reach their minimum speed very quickly.
 Defaults to 0.18.
 
 #### particleFrictionNoise
+
 Controls the random variability around the particleFriction value. Adding some variability makes the animation look more organic.
 Defaults to 0.05.
 
 #### mouseAvoidanceStrength
+
 Controls the how strongly particles are repulsed by the mouse.
 Defaults to 2.
 
 #### mouseAvoidanceStrengthNoise
+
 Controls the random variability around the mouseAvoidanceStrength value. Adding some variability makes the animation look more organic.
 Defaults to 2.
 
 #### mouseAvoidanceDistance
+
 Controls the distance from the mouse where particles start feeling an effect.
 Defaults to 50.
 
 #### mouseAvoidanceDistanceNoise
+
 Controls the random variability around the mouseAvoidanceDistance value. Adding some variability makes the animation look more organic.
 Defaults to 50.

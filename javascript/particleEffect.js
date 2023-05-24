@@ -44,10 +44,14 @@ function Particle(x, y) {
   this.vy = (Math.random() - 0.5) * 20;
   this.accX = 0;
   this.accY = 0;
-  this.friction = (Math.random() - 0.5) * config.particleFrictionNoise + (1 - config.particleFriction);
+  this.friction =
+    (Math.random() - 0.5) * config.particleFrictionNoise +
+    (1 - config.particleFriction);
 
   const colorValue = (Math.random() - 0.5) * config.colorNoise;
-  this.color = `rgb(${config.particleColor[0] + colorValue},${config.particleColor[1] + colorValue},${config.particleColor[2] + colorValue})`;
+  this.color = `rgb(${config.particleColor[0] + colorValue},${
+    config.particleColor[1] + colorValue
+  },${config.particleColor[2] + colorValue})`;
 }
 Particle.prototype.render = function () {
   ctx.fillStyle = this.color;
@@ -78,9 +82,19 @@ function updateParticlePosition(particle) {
     let dx = particle.x - mouse.x;
     let dy = particle.y - mouse.y;
     let distance = Math.sqrt(dx * dx + dy * dy);
-    if (distance < radius * config.mouseAvoidanceDistance + (Math.random() - 0.5) * radius * config.mouseAvoidanceDistanceNoise) {
-      particle.accX = (particle.x - mouse.x) * ((config.mouseAvoidanceStrength / 100 + (Math.random() - 0.5) * config.mouseAvoidanceStrengthNoise / 100));
-      particle.accY = (particle.y - mouse.y) * ((config.mouseAvoidanceStrength / 100 + (Math.random() - 0.5) * config.mouseAvoidanceStrengthNoise / 100));
+    if (
+      distance <
+      radius * config.mouseAvoidanceDistance +
+        (Math.random() - 0.5) * radius * config.mouseAvoidanceDistanceNoise
+    ) {
+      particle.accX =
+        (particle.x - mouse.x) *
+        (config.mouseAvoidanceStrength / 100 +
+          ((Math.random() - 0.5) * config.mouseAvoidanceStrengthNoise) / 100);
+      particle.accY =
+        (particle.y - mouse.y) *
+        (config.mouseAvoidanceStrength / 100 +
+          ((Math.random() - 0.5) * config.mouseAvoidanceStrengthNoise) / 100);
       particle.vx += particle.accX;
       particle.vy += particle.accY;
     }
@@ -89,7 +103,7 @@ function updateParticlePosition(particle) {
 
 // Event handling functions
 function mouseStatus(value) {
-    mouseOverCanvas = value;
+  mouseOverCanvas = value;
 }
 function onMouseMove(e) {
   mouse.x = (e.pageX - canvas.offsetLeft) * retinaIndex;
@@ -165,7 +179,7 @@ function initScene(base64Img) {
   image.src = `data:image/png;base64,${lastUsedImage}`;
 }
 function updateScene() {
-  var x = 0
+  var x = 0;
 }
 
 function handleResize() {
