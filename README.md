@@ -43,12 +43,10 @@ window.updateConfig({ particleColor: color });
 ```
 
 #### particleColor
-
 Controls the base color of the particles. Provided as RGB.
 Defaults to [150, 190, 195].
 
 #### colorNoise
-
 Controls the random brightness variability around the base color. A value of 0 means all the particles are the exact same color.
 Defaults to 80.
 
